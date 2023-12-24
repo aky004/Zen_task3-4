@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Company Metrics Dashboard</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f5f5f5;
+  }
+
+  .dashboard {
+    max-width: 1200px;
+    margin: 20px auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  .title {
+    grid-column: span 4;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .metric {
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    position: relative;
+  }
+
+  .metric:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 10px;
+    background-color: #4CAF50;
+  }
+
+  .metric.outstanding:before {
+    background-color: #F44336;
+  }
+
+  .metric .label {
+    display: block;
+    color: #555;
+  }
+
+  .metric .value {
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .metric .value.green {
+    color: #4CAF50;
+  }
+
+  .metric .value.red {
+    color: #F44336;
+  }
+
+  .chart-container {
+    grid-column: span 2;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+
+  .chart-title {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+
+  canvas {
+    width: 100% !important;
+    height: 400px !important;
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="dashboard">
+  <!-- Title -->
+  <div class="title">Company Metrics</div>
+
+  <!-- Metrics -->
+  <div class="metric">
+    <span class="label">Total Revenue</span>
+    <span class="value green">$406,411.29</span>
+  </div>
+  <div class="metric">
+    <span class="label">Total Jobs Avg</span>
+    <span class="value green">$620</span>
+  </div>
+  <div class="metric">
+    <span class="label">Memberships Sold</span>
+    <span class="value green">105</span>
+  </div>
+  <div class="metric">
+    <span class="label">Tickets Created</span>
+    <span class="value green">655</span>
+  </div>
+  <div class="metric">
+    <span class="label">Jobs Completed</span>
+    <span class="value green">436</span>
+  </div>
+  <div class="metric">
+    <span class="label">Tickets Scheduled</span>
+    <span class="value green">735</span>
+  </div>
+  <div class="metric outstanding">
+    <span class="label">Outstanding Amount</span>
+    <span class="value red">$110,448.8</span>
+  </div>
+  <div class="metric">
+    <span class="label">Total Canceled</span>
+    <span class="value red">65</span>
+  </div>
+
+  <div class="chart-container">
+    <div class="chart-title">Revenue By Job Location</div>
+    <canvas id="chart-location"></canvas>
+  </div>
+
+  <div class="chart-container">
+    <div class="chart-title">Revenue By Job Type</div>
+    <canvas id="chart-job-type"></canvas>
+  </div>
+</div>
+
+<script>
+const locationData = {
+  labels: ['Everett', 'Seattle', 'Lynnwood', 'Bothell', 'Mukilteo', 'Edmonds'],
+  datasets: [{
+    label: 'Revenue',
+    data: [12000, 19000, 30000, 50000, 20000, 30000],
+    backgroundColor: '#4CAF50'
+  }]
+};
+
+const jobTypeData = {
+  labels: ['Service Plumbing', 'Bid Work HVAC', 'Service HVAC', 'Bid Work Plumbing', 'HWT Replacement', 'Maintenance', 'Material Sale'],
+  datasets: [{
+    label: 'Revenue',
+    data: [25000, 17500, 20000, 15000, 10000, 7500, 30000],
+    backgroundColor: '#4CAF50'
+  }]
+};
+
+const configLocation = {
+  type: 'bar',
+  data: locationData,
+  options: {
+    indexAxis: 'y',
+    scales: {
+      x: {
+        beginAtZero: true
+      }
+    },
+    plugins: {
+      legend: {
+        display: false
+      }
+    },
+    responsive: true,
+    maintainAspectRatio: false
+  }
+};
+
+const configJobType = {
+  type: 'bar',
+  data: jobTypeData,
+  options: {
+    indexAxis: 'y', 
+    scales: {
+      x: {
+        beginAtZero: true
+      }
+    },
+    plugins: {
+      legend: {
+        display: false
+      }
+    },
+    responsive: true,
+    maintainAspectRatio: false
+  }
+};
+
+window.onload = function() {
+  const ctxLocation = document.getElementById('chart-location').getContext('2d');
+  new Chart(ctxLocation, configLocation);
+
+  const ctxJobType = document.getElementById('chart-job-type').getContext('2d');
+  new Chart(ctxJobType, configJobType);
+};
+</script>
+</body>
+</html>
